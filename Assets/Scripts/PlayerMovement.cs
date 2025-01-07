@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using Unity.VisualScripting;
 
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float walkSpeed = 5f;
-    public float sprintSpeed = 8f;
+    public float walkSpeed = 10f;
+    public float sprintSpeed = 20f;
     public float jumpForce = 7f;
     public bool is3DView = false;  // Set to true when in 3D view, false in 2D view
 
@@ -22,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera camera2D;
     public CinemachineVirtualCamera camera3D;
+
+    [Header("Animation Settings")]
+    public Animator animator;
 
     private void Start()
     {
@@ -61,6 +63,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Jump();
         }
+
+        UpdateAnimation();
     }
 
     private void Move2D()
@@ -70,6 +74,16 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 move = new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
         rb.MovePosition(transform.position + move);
+
+        // Face player in the direction of movement
+        if (moveX > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+        else if (moveX < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, -90, 0);
+        }
     }
 
     private void Move3D()
@@ -98,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         isGrounded = false;
+        animator.SetTrigger("Jump");
     }
 
     private void ToggleCameraView(bool switchTo3D)
@@ -118,8 +133,8 @@ public class PlayerMovement : MonoBehaviour
             camera2D.Priority = 10;
             camera3D.Priority = 0;
 
-            // Reset player rotation to face forward along the Z-axis in 2D
-            transform.rotation = Quaternion.identity;
+            // Reset player rotation to face forward along the X-axis in 2D
+            transform.rotation = Quaternion.Euler(0, 90, 0);
 
             // Reset 2D camera position and rotation
             camera2D.transform.position = new Vector3(transform.position.x, transform.position.y, camera2D.transform.position.z);
@@ -131,6 +146,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void UpdateAnimation()
+    {
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = is3DView ? Input.GetAxis("Vertical") : 0;
+        float speed = Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput);
+
+        animator.SetFloat("Speed", speed);
+        animator.SetBool("IsGrounded", isGrounded);
+        animator.SetBool("Is3DView", is3DView);
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -140,5 +165,3 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 }
-
-
