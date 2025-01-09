@@ -61,4 +61,11 @@ public class fireBullet : MonoBehaviour
 
 
     }
+
+    public void reload (int ammo)
+    {
+        remainingRounds += ammo;
+        playerAmmoSlider.value = remainingRounds;
+    }
+
 }

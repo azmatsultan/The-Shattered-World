@@ -40,7 +40,7 @@ public class playerHealth : MonoBehaviour
         damaged = false;
     }
 
-    public void addDamage(float damage)
+    public void addDamage (float damage)
     {
         currentHealth -= damage;
         playerHealthSlider.value = currentHealth;
@@ -49,6 +49,16 @@ public class playerHealth : MonoBehaviour
         {
             makeDead();
         }
+    }
+
+    public void addHealth (float health)
+    {
+        currentHealth += health;
+        if (currentHealth > fullHealth) 
+        {
+            currentHealth = fullHealth; 
+        }
+        playerHealthSlider.value = currentHealth;
     }
 
     public void makeDead()
