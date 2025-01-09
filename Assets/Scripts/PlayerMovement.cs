@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private bool isGrounded = true;
+    private bool facingRight = true;
 
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera camera2D;
@@ -79,10 +80,12 @@ public class PlayerMovement : MonoBehaviour
         if (moveX > 0)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);
+            facingRight = true;
         }
         else if (moveX < 0)
         {
             transform.rotation = Quaternion.Euler(0, -90, 0);
+            facingRight = false;
         }
     }
 
@@ -163,5 +166,10 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = true;
         }
+    }
+
+    public float GetFacing()
+    {
+        if (facingRight) return 1; else return -1;
     }
 }
