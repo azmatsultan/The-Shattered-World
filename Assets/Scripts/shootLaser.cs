@@ -26,6 +26,18 @@ public class shootLaser : MonoBehaviour
 
         if(Physics.Raycast(shootRay, out shootHit, range, shootableMask))
         {
+            if (shootHit.collider.tag == "Enemy")
+            {
+                enemyHealth theEnemyHealth = shootHit.collider.GetComponent<enemyHealth>();
+                if (theEnemyHealth != null)
+                {
+                    theEnemyHealth.addDamage(damage);
+                    theEnemyHealth.addFire();
+                    theEnemyHealth.damageFX(shootHit.point, -shootRay.direction);
+
+                }
+            }
+
             gunLine.SetPosition(1, shootHit.point);
         }
         else
