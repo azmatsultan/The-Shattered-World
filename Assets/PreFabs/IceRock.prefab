@@ -9514,7 +9514,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.99264705, g: 0.4579667, b: 0.16787411, a: 1}
+  m_Color: {r: 0.33397114, g: 0.7146895, b: 0.745283, a: 1}
   m_Intensity: 4
   m_Range: 30
   m_SpotAngle: 30
@@ -9757,7 +9757,7 @@ Transform:
   m_GameObject: {fileID: 4406883642039790291}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.6533333, z: 16.343336}
   m_LocalScale: {x: 0.036666658, y: 0.038333334, z: 0.043999992}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10149,7 +10149,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0, g: 0.27676678, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14657,8 +14657,8 @@ GameObject:
   - component: {fileID: 649273274460479814}
   - component: {fileID: 5791054856691462879}
   m_Layer: 6
-  m_Name: LavaRock
-  m_TagString: Enemy
+  m_Name: IceRock
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14710,7 +14710,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 42e26e838cb21e944aa7de2aae4edefc, type: 2}
+  - {fileID: 2100000, guid: eff9bd1fc3971e7499e63b512110dfef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15310,7 +15310,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0, g: 0.0816164, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
