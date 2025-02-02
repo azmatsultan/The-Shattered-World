@@ -111,6 +111,9 @@ public class EnemyController : MonoBehaviour
     void Flip()
     {
         facingRight = !facingRight;
+
+        //flipModel.transform.Rotate(0f, 180f, 0f);
+
         Vector3 theScale = flipModel.transform.localScale;
         theScale.z *= -1;
         flipModel.transform.localScale = theScale;
