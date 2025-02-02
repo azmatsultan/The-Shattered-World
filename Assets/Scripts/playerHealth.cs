@@ -10,6 +10,8 @@ public class playerHealth : MonoBehaviour
     float currentHealth;
 
     public GameObject playerDeathFX;
+    public GameObject GameManager;
+    GameManager gameManager;
 
     //HUD
     public Slider playerHealthSlider;
@@ -25,6 +27,11 @@ public class playerHealth : MonoBehaviour
         playerHealthSlider.maxValue = fullHealth;
         playerHealthSlider.value = currentHealth;
 
+    }
+
+    private void Awake()
+    {
+        gameManager = GameManager.GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -65,6 +72,7 @@ public class playerHealth : MonoBehaviour
     {
         Instantiate(playerDeathFX, transform.position, Quaternion.Euler (new Vector3(-90, 0, 0)));
         damageScreen.color = flashColor;
+        gameManager.ReturnToMainMenu();
         Destroy(gameObject);
     }
 
