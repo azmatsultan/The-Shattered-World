@@ -3669,14 +3669,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ec7e1fc3aa25e4a8754fd773cfda4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
-  sprintSpeed: 20
+  walkSpeed: 15
+  sprintSpeed: 30
   jumpForce: 200
   is3DView: 0
   mouseSensitivity: 100
   camera2D: {fileID: 0}
   camera3D: {fileID: 0}
   animator: {fileID: 4303931703436745350}
+  respawnPoint: {fileID: 0}
 --- !u!114 &8487220345023462132
 MonoBehaviour:
   m_ObjectHideFlags: 0
