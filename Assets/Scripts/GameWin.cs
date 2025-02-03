@@ -27,7 +27,7 @@ public class GameWin : MonoBehaviour
         {
             
             Winscreen.SetActive(true);
-            StartCoroutine(CallWithDelay(2f)); // 2-second delay
+            StartCoroutine(CallWithDelay(1f)); // 2-second delay
 
             // Unlock and show the cursor
             Cursor.lockState = CursorLockMode.None;
@@ -37,7 +37,9 @@ public class GameWin : MonoBehaviour
 
     private IEnumerator CallWithDelay(float delay)
     {
+        GameManager.Instance.LevelCompleted();
         yield return new WaitForSeconds(delay); // Wait for the specified time
+        
         ReturnToMainMenu(); // Call your target function
     }
 

@@ -26,6 +26,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animation Settings")]
     public Animator animator;
 
+    public Transform respawnPoint;
+    
+    playerHealth thePlayerHealth;
+
+    private void Awake()
+    {
+        thePlayerHealth = gameObject.GetComponent<playerHealth>();
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -66,6 +75,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         UpdateAnimation();
+
+        // Check if player has fallen below -0.95 in Y-axis
+        if (transform.position.y < -0.95f)
+        {
+            RespawnPlayer();
+        }
     }
 
     private void Move2D()
@@ -171,5 +186,14 @@ public class PlayerMovement : MonoBehaviour
     public float GetFacing()
     {
         if (facingRight) return 1; else return -1;
+    }
+
+    private void RespawnPlayer()
+    {
+
+        thePlayerHealth.addDamage(5);
+        transform.position = respawnPoint.position; // Move player to respawn point
+        rb.velocity = Vector3.zero; // Reset velocity to prevent continued falling
+         
     }
 }
