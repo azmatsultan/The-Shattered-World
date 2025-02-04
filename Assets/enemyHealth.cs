@@ -15,6 +15,7 @@ public class enemyHealth : MonoBehaviour
     public float burnDamage;
     public float burnTime;
     public GameObject burnEffects;
+    public bool isDead;
 
     bool onFire;
     float nextBurn;
@@ -25,7 +26,8 @@ public class enemyHealth : MonoBehaviour
 
     public Slider enemyHealthIndicator;
 
-    
+    public AudioSource enemyAudioSource;
+    public AudioClip deathSound;
 
     
     
@@ -59,7 +61,11 @@ public class enemyHealth : MonoBehaviour
         if (damage <= 0f) return;
         currentHealth -= damage;
         enemyHealthIndicator.value = currentHealth;
-        if (currentHealth <= 0) makeDead();
+        if (currentHealth <= 0 && !isDead)
+        {
+            isDead = true;
+            makeDead();
+        }
     }
 
     public void damageFX(Vector3 point, Vector3 rotation)
@@ -78,9 +84,32 @@ public class enemyHealth : MonoBehaviour
 
     void makeDead()
     {
+        
         if(drops) Instantiate(drop, transform.position, transform.rotation);
+        Instantiate(damageParticles, transform.position, Quaternion.Euler(new Vector3(-90, 0, 0)));
+
+        if (deathSound != null && enemyAudioSource != null)
+        {
+
+            // Disable enemy controls and collider
+            GetComponent<Collider>().enabled = false;
+
+            // Disable all SkinnedMeshRenderers (instead of MeshRenderers)
+            foreach (SkinnedMeshRenderer smr in GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                smr.enabled = false;
+            }
+
+            enemyAudioSource.PlayOneShot(deathSound);
+            Destroy(gameObject, deathSound.length); // Delay destruction until sound finishes
+        }
+        else
+        {
+            Destroy(gameObject); // Fallback in case audio is missing
+        }
+
         //Destroy(gameObject.transform.root.gameObject);
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
 }

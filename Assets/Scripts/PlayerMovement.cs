@@ -26,6 +26,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animation Settings")]
     public Animator animator;
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource;  // The single AudioSource attached to the player
+    public AudioClip moveClip;       // Movement sound clip
+    
+
     public Transform respawnPoint;
     
     playerHealth thePlayerHealth;
@@ -50,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         // Toggle between 2D and 3D view on Tab key press
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -69,17 +74,22 @@ public class PlayerMovement : MonoBehaviour
             Move2D();
         }
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            Jump();
-        }
 
+        UpdateMovementSound();
         UpdateAnimation();
 
         // Check if player has fallen below -0.95 in Y-axis
         if (transform.position.y < -0.95f)
         {
             RespawnPlayer();
+        }
+    }
+
+    private void Update()
+    {
+        if(Input.GetButtonDown("Jump") && isGrounded)
+        {
+            Jump();
         }
     }
 
@@ -161,6 +171,29 @@ public class PlayerMovement : MonoBehaviour
             // Unlock and show the cursor for 2D view
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+    }
+
+    private void UpdateMovementSound()
+    {
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = is3DView ? Input.GetAxis("Vertical") : 0;
+
+        if ((moveX != 0 || moveZ != 0) && isGrounded) // Player is moving
+        {
+            if (!audioSource.isPlaying && moveClip != null)
+            {
+                audioSource.clip = moveClip;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+        }
+        else // Player stopped moving
+        {
+            if (audioSource.isPlaying && audioSource.clip == moveClip)
+            {
+                audioSource.Stop();
+            }
         }
     }
 

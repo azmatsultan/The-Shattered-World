@@ -2046,6 +2046,8 @@ MonoBehaviour:
   playerAmmoSlider: {fileID: 0}
   maxRounds: 20
   startingRounds: 10
+  audioSource: {fileID: 0}
+  shootClip: {fileID: 0}
 --- !u!1 &7758379400427794247
 GameObject:
   m_ObjectHideFlags: 0
@@ -2734,6 +2736,9 @@ MonoBehaviour:
   camera2D: {fileID: 0}
   camera3D: {fileID: 0}
   animator: {fileID: 6931760935597405589}
+  audioSource: {fileID: 0}
+  moveClip: {fileID: 0}
+  respawnPoint: {fileID: 0}
 --- !u!114 &3507319269038717504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2749,5 +2754,10 @@ MonoBehaviour:
   fullHealth: 30
   playerDeathFX: {fileID: 8661353219053884008, guid: 153924dd1e099484882d7ca54abb71d3,
     type: 3}
+  GameManager: {fileID: 0}
+  isDead: 0
   playerHealthSlider: {fileID: 0}
   damageScreen: {fileID: 0}
+  audioSource: {fileID: 0}
+  DamageTakenClip: {fileID: 0}
+  PlayerDeathSound: {fileID: 0}
