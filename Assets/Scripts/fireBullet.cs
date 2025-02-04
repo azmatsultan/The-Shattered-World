@@ -17,6 +17,10 @@ public class fireBullet : MonoBehaviour
 
     float nextBullet;
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource;  // The single AudioSource attached to the player
+    public AudioClip shootClip;      // Shooting sound clip
+
     // Use this for initialization
     void Awake()
     {
@@ -34,6 +38,9 @@ public class fireBullet : MonoBehaviour
 
         if (Input.GetAxisRaw("Fire1") > 0 && nextBullet < Time.time && remainingRounds>0)
         {
+            
+            PlayShootSound();
+            
             nextBullet = Time.time + timeBetweenBullets;
             Vector3 rot;
 
@@ -60,6 +67,14 @@ public class fireBullet : MonoBehaviour
 
 
 
+    }
+
+    private void PlayShootSound()
+    {
+        if (shootClip != null)
+        {
+            audioSource.PlayOneShot(shootClip);
+        }
     }
 
     public void reload (int ammo)
