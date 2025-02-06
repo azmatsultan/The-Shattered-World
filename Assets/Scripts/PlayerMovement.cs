@@ -5,6 +5,15 @@ using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    
+    public enum MovementType
+    {
+        Keyboard,
+        Controller
+    };
+
+    public MovementType movementType;
+    
     [Header("Movement Settings")]
     public float walkSpeed = 10f;
     public float sprintSpeed = 20f;
@@ -14,6 +23,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Mouse Settings for 3D")]
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
+
+    [Header("Joystick Settings for 3D")]
+    public float joystickSensitivity = 100f;
 
     private Rigidbody rb;
     private bool isGrounded = true;
@@ -57,12 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Toggle between 2D and 3D view on Tab key press
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            is3DView = !is3DView;
-            ToggleCameraView(is3DView);
-        }
+        
 
         if (is3DView)
         {
@@ -87,53 +94,126 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        if (movementType == MovementType.Keyboard)
         {
-            Jump();
+            if (Input.GetButtonDown("Jump") && isGrounded)
+            {
+                Jump();
+            }
+
+            // Toggle between 2D and 3D view on Tab key press
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                is3DView = !is3DView;
+                ToggleCameraView(is3DView);
+            }
+        }
+        if (movementType == MovementType.Controller)
+        {
+            if (Input.GetButtonDown("JumpGamepad") && isGrounded)
+            {
+                Jump();
+            }
+
+            // Toggle between 2D and 3D view on Tab key press
+            if (Input.GetButtonDown("CameraGamepad"))
+            {
+                is3DView = !is3DView;
+                ToggleCameraView(is3DView);
+            }
         }
     }
 
     private void Move2D()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float speed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
-
-        Vector3 move = new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
-        rb.MovePosition(transform.position + move);
-
-        // Face player in the direction of movement
-        if (moveX > 0)
+        if (movementType == MovementType.Keyboard)
         {
-            transform.rotation = Quaternion.Euler(0, 90, 0);
-            facingRight = true;
+            float moveX = Input.GetAxis("Horizontal");
+            float speed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
+
+            Vector3 move = new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
+            rb.MovePosition(transform.position + move);
+
+            // Face player in the direction of movement
+            if (moveX > 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 90, 0);
+                facingRight = true;
+            }
+            else if (moveX < 0)
+            {
+                transform.rotation = Quaternion.Euler(0, -90, 0);
+                facingRight = false;
+            }
         }
-        else if (moveX < 0)
+        if (movementType == MovementType.Controller)
         {
-            transform.rotation = Quaternion.Euler(0, -90, 0);
-            facingRight = false;
+            float moveX = Input.GetAxis("HorizontalGamepad");
+            float speed = Input.GetAxisRaw("SprintGamepad") > 0.5f ? sprintSpeed : walkSpeed;
+
+            Vector3 move = new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
+            rb.MovePosition(transform.position + move);
+
+            // Face player in the direction of movement
+            if (moveX > 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 90, 0);
+                facingRight = true;
+            }
+            else if (moveX < 0)
+            {
+                transform.rotation = Quaternion.Euler(0, -90, 0);
+                facingRight = false;
+            }
         }
     }
 
     private void Move3D()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
-        float speed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
+        if (movementType == MovementType.Keyboard)
+        {
+            float moveX = Input.GetAxis("Horizontal");
+            float moveZ = Input.GetAxis("Vertical");
+            float speed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
 
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        rb.MovePosition(transform.position + move * speed * Time.deltaTime);
+            Vector3 move = transform.right * moveX + transform.forward * moveZ;
+            rb.MovePosition(transform.position + move * speed * Time.deltaTime);
+        }
+        if (movementType == MovementType.Controller)
+        {
+            float moveX = Input.GetAxis("HorizontalGamepad");
+            float moveZ = Input.GetAxis("VerticalGamepad");
+            float speed = Input.GetAxisRaw("SprintGamepad") > 0.5f ? sprintSpeed : walkSpeed;
+
+            Vector3 move = transform.right * moveX + transform.forward * moveZ;
+            rb.MovePosition(transform.position + move * speed * Time.deltaTime);
+        }
     }
 
     private void RotateWithMouse()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        if (movementType == MovementType.Keyboard)
+        {
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.Rotate(Vector3.up * mouseX);
+            Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            transform.Rotate(Vector3.up * mouseX);
+        }
+        if (movementType == MovementType.Controller)
+        {
+            float mouseX = Input.GetAxis("Gamepad X") * joystickSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Gamepad Y") * joystickSensitivity * Time.deltaTime;
+
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+            Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            transform.Rotate(Vector3.up * mouseX);
+        }
     }
 
     private void Jump()
@@ -176,36 +256,74 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateMovementSound()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = is3DView ? Input.GetAxis("Vertical") : 0;
-
-        if ((moveX != 0 || moveZ != 0) && isGrounded) // Player is moving
+        if (movementType == MovementType.Keyboard)
         {
-            if (!audioSource.isPlaying && moveClip != null)
+            float moveX = Input.GetAxis("Horizontal");
+            float moveZ = is3DView ? Input.GetAxis("Vertical") : 0;
+
+            if ((moveX != 0 || moveZ != 0) && isGrounded) // Player is moving
             {
-                audioSource.clip = moveClip;
-                audioSource.loop = true;
-                audioSource.Play();
+                if (!audioSource.isPlaying && moveClip != null)
+                {
+                    audioSource.clip = moveClip;
+                    audioSource.loop = true;
+                    audioSource.Play();
+                }
+            }
+            else // Player stopped moving
+            {
+                if (audioSource.isPlaying && audioSource.clip == moveClip)
+                {
+                    audioSource.Stop();
+                }
             }
         }
-        else // Player stopped moving
+        if (movementType == MovementType.Controller)
         {
-            if (audioSource.isPlaying && audioSource.clip == moveClip)
+            float moveX = Input.GetAxis("HorizontalGamepad");
+            float moveZ = is3DView ? Input.GetAxis("VerticalGamepad") : 0;
+
+            if ((moveX != 0 || moveZ != 0) && isGrounded) // Player is moving
             {
-                audioSource.Stop();
+                if (!audioSource.isPlaying && moveClip != null)
+                {
+                    audioSource.clip = moveClip;
+                    audioSource.loop = true;
+                    audioSource.Play();
+                }
+            }
+            else // Player stopped moving
+            {
+                if (audioSource.isPlaying && audioSource.clip == moveClip)
+                {
+                    audioSource.Stop();
+                }
             }
         }
     }
 
     private void UpdateAnimation()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = is3DView ? Input.GetAxis("Vertical") : 0;
-        float speed = Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput);
+        if (movementType == MovementType.Keyboard)
+        {
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = is3DView ? Input.GetAxis("Vertical") : 0;
+            float speed = Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput);
 
-        animator.SetFloat("Speed", speed);
-        animator.SetBool("IsGrounded", isGrounded);
-        animator.SetBool("Is3DView", is3DView);
+            animator.SetFloat("Speed", speed);
+            animator.SetBool("IsGrounded", isGrounded);
+            animator.SetBool("Is3DView", is3DView);
+        }
+        if (movementType == MovementType.Controller)
+        {
+            float horizontalInput = Input.GetAxis("HorizontalGamepad");
+            float verticalInput = is3DView ? Input.GetAxis("VerticalGamepad") : 0;
+            float speed = Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput);
+
+            animator.SetFloat("Speed", speed);
+            animator.SetBool("IsGrounded", isGrounded);
+            animator.SetBool("Is3DView", is3DView);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

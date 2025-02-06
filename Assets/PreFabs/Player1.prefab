@@ -3671,11 +3671,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ec7e1fc3aa25e4a8754fd773cfda4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementType: 0
   walkSpeed: 5
   sprintSpeed: 10
   jumpForce: 250
   is3DView: 0
   mouseSensitivity: 100
+  joystickSensitivity: 100
   camera2D: {fileID: 0}
   camera3D: {fileID: 0}
   animator: {fileID: 4303931703436745350}

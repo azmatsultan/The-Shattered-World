@@ -8,7 +8,9 @@ public class GameWin : MonoBehaviour
 {
 
     public GameObject Winscreen;
-    
+    public GameObject WinScreenMultiplayerP1;
+    public GameObject WinScreenMultiplayerP2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +27,16 @@ public class GameWin : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (GameManager.Instance.isMultiPlayer)
+            {
+                WinScreenMultiplayerP1.SetActive(true);
+                WinScreenMultiplayerP2.SetActive(true);
+            }
+            else
+            {
+                Winscreen.SetActive(true);
+            }
             
-            Winscreen.SetActive(true);
             StartCoroutine(CallWithDelay(1f)); // 2-second delay
 
             // Unlock and show the cursor
