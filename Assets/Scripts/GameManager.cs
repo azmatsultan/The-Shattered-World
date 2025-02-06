@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
     public GameObject pausePanel;
     public GameObject pausePanelMultiplayerP1;
-    public GameObject pausePanelMultiplayerP2;
+    public GameObject pausePanelMultiplayerP2; 
 
     public bool isMultiPlayer;
 
@@ -33,17 +33,20 @@ public class GameManager : MonoBehaviour
     public int artifactsCollected = 0;
 
     public GameObject endPortalLvl1;
+    public GameObject endPortalLvl1Txt;
     public BoxCollider endPortalLvl1Collider;
 
     public GameObject endPortalLvl2;
+    public GameObject endPortalLvl2Txt;
     public BoxCollider endPortalLvl2Collider;
 
     public GameObject endPortalLvl3;
+    public GameObject endPortalLvl3Txt;
     public BoxCollider endPortalLvl3Collider;
 
     private int[] highScores = new int[3];
     private string[] highScoreNames = new string[3];
-    private int currentLevel = 0; // Tracks the current level (0, 1, 2)
+    public int currentLevel = 0; // Tracks the current level (0, 1, 2)
 
     private void Awake()
     {
@@ -116,15 +119,18 @@ public class GameManager : MonoBehaviour
             if (currentLevel == 0)
             {
                 endPortalLvl1.SetActive(true);
+                endPortalLvl1Txt.SetActive(false);
                 endPortalLvl1Collider.enabled = true;
             }else if (currentLevel == 1)
             {
                 endPortalLvl2.SetActive(true);
+                endPortalLvl2Txt.SetActive(false);
                 endPortalLvl2Collider.enabled = true;
             }
             else
             {
                 endPortalLvl3.SetActive(true);
+                endPortalLvl3Txt.SetActive(false);
                 endPortalLvl3Collider.enabled = true;
             }
         }

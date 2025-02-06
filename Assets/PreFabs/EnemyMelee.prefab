@@ -83,7 +83,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 0.75, z: 10}
+  m_Size: {x: 1, y: 0.75, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4803799392367896286
 MonoBehaviour:
@@ -10364,10 +10364,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.31922472
-  m_Height: 0.9063064
+  m_Radius: 0.25
+  m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.0137497485, y: -0.046846926, z: 2.6648874e-17}
+  m_Center: {x: 0.0137497485, y: 0, z: 2.6648874e-17}
 --- !u!114 &2666579000172879284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10489,7 +10489,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 49.03, y: 1.4999999, z: -0}
-  m_LocalScale: {x: 2.2, y: 2.3, z: 2.2}
+  m_LocalScale: {x: 5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1405048499797562725}
@@ -10567,10 +10567,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.37347534
+  m_Radius: 0.25
   m_Height: 1
   m_Direction: 2
-  m_Center: {x: 0.009990394, y: 0.38134474, z: 0.100000024}
+  m_Center: {x: 0.009990394, y: 0.5, z: 0.100000024}
 --- !u!114 &3070552458548303060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10583,7 +10583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f61084bcd8e82484ab80254357981288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMaxHealth: 20
+  enemyMaxHealth: 30
   damageModifier: 1
   damageParticles: {fileID: 8661353219053884008, guid: a414cf4e16101f64e89315d9cb8e3797,
     type: 3}
@@ -10593,6 +10593,7 @@ MonoBehaviour:
   burnDamage: 4
   burnTime: 4
   burnEffects: {fileID: 5702146078455577785}
+  isDead: 0
   enemyHealthIndicator: {fileID: 5572889613001302476}
   enemyAudioSource: {fileID: 3757702224823955809}
   deathSound: {fileID: 8300000, guid: 2cd14df49d96c814281ff40fb527cb1d, type: 3}
