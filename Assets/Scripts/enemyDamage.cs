@@ -20,8 +20,8 @@ public class enemyDamage : MonoBehaviour
     void Start()
     {
         nextDamage = Time.time;
-        thePlayer = GameObject.FindGameObjectWithTag("Player");
-        thePlayerHealth = thePlayer.GetComponent<playerHealth>();
+        //thePlayer = GameObject.FindGameObjectWithTag("Player");
+        //thePlayerHealth = thePlayer.GetComponent<playerHealth>();
     }
 
     // Update is called once per frame
@@ -34,6 +34,8 @@ public class enemyDamage : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            thePlayer = other.gameObject;
+            thePlayerHealth = thePlayer.GetComponent<playerHealth>();
             playerInRange = true;
         }
     }
