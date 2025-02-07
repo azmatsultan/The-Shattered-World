@@ -126,69 +126,62 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move2D()
     {
-        if (movementType == MovementType.Keyboard)
+        float moveX = 0f;
+        float speed = walkSpeed;
+
+        if (!GameManager.Instance.isMultiPlayer || movementType == MovementType.Keyboard)
         {
-            float moveX = Input.GetAxis("Horizontal");
-            float speed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
-
-            Vector3 move = new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
-            rb.MovePosition(transform.position + move);
-
-            // Face player in the direction of movement
-            if (moveX > 0)
-            {
-                transform.rotation = Quaternion.Euler(0, 90, 0);
-                facingRight = true;
-            }
-            else if (moveX < 0)
-            {
-                transform.rotation = Quaternion.Euler(0, -90, 0);
-                facingRight = false;
-            }
+            moveX += Input.GetAxis("Horizontal");  // Add keyboard input
+            if (Input.GetKey(KeyCode.LeftShift)) speed = sprintSpeed;
         }
-        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
+
+        if (!GameManager.Instance.isMultiPlayer || movementType == MovementType.Controller)
         {
-            float moveX = Input.GetAxis("HorizontalGamepad");
-            float speed = Input.GetAxisRaw("SprintGamepad") > 0.5f ? sprintSpeed : walkSpeed;
+            moveX += Input.GetAxis("HorizontalGamepad");  // Add controller input
+            if (Input.GetAxisRaw("SprintGamepad") > 0.5f) speed = sprintSpeed;
+        }
 
-            Vector3 move = new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
-            rb.MovePosition(transform.position + move);
+        Vector3 move = new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
+        rb.MovePosition(transform.position + move);
 
-            // Face player in the direction of movement
-            if (moveX > 0)
-            {
-                transform.rotation = Quaternion.Euler(0, 90, 0);
-                facingRight = true;
-            }
-            else if (moveX < 0)
-            {
-                transform.rotation = Quaternion.Euler(0, -90, 0);
-                facingRight = false;
-            }
+        // Face player in the direction of movement
+        if (moveX > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+            facingRight = true;
+        }
+        else if (moveX < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, -90, 0);
+            facingRight = false;
         }
     }
+
 
     private void Move3D()
     {
-        if (movementType == MovementType.Keyboard)
-        {
-            float moveX = Input.GetAxis("Horizontal");
-            float moveZ = Input.GetAxis("Vertical");
-            float speed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
+        float moveX = 0f;
+        float moveZ = 0f;
+        float speed = walkSpeed;
 
-            Vector3 move = transform.right * moveX + transform.forward * moveZ;
-            rb.MovePosition(transform.position + move * speed * Time.deltaTime);
-        }
-        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
+        if (!GameManager.Instance.isMultiPlayer || movementType == MovementType.Keyboard)
         {
-            float moveX = Input.GetAxis("HorizontalGamepad");
-            float moveZ = Input.GetAxis("VerticalGamepad");
-            float speed = Input.GetAxisRaw("SprintGamepad") > 0.5f ? sprintSpeed : walkSpeed;
-
-            Vector3 move = transform.right * moveX + transform.forward * moveZ;
-            rb.MovePosition(transform.position + move * speed * Time.deltaTime);
+            moveX += Input.GetAxis("Horizontal");  // Add keyboard input
+            moveZ += Input.GetAxis("Vertical");
+            if (Input.GetKey(KeyCode.LeftShift)) speed = sprintSpeed;
         }
+
+        if (!GameManager.Instance.isMultiPlayer || movementType == MovementType.Controller)
+        {
+            moveX += Input.GetAxis("HorizontalGamepad");  // Add controller input
+            moveZ += Input.GetAxis("VerticalGamepad");
+            if (Input.GetAxisRaw("SprintGamepad") > 0.5f) speed = sprintSpeed;
+        }
+
+        Vector3 move = transform.right * moveX + transform.forward * moveZ;
+        rb.MovePosition(transform.position + move * speed * Time.deltaTime);
     }
+
 
     private void RotateWithMouse()
     {
@@ -256,75 +249,66 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateMovementSound()
     {
-        if (movementType == MovementType.Keyboard)
-        {
-            float moveX = Input.GetAxis("Horizontal");
-            float moveZ = is3DView ? Input.GetAxis("Vertical") : 0;
+        float moveX = 0f;
+        float moveZ = 0f;
 
-            if ((moveX != 0 || moveZ != 0) && isGrounded) // Player is moving
+        if (!GameManager.Instance.isMultiPlayer || movementType == MovementType.Keyboard)
+        {
+            moveX += Input.GetAxis("Horizontal");
+            moveZ += is3DView ? Input.GetAxis("Vertical") : 0;
+        }
+
+        if (!GameManager.Instance.isMultiPlayer || movementType == MovementType.Controller)
+        {
+            moveX += Input.GetAxis("HorizontalGamepad");
+            moveZ += is3DView ? Input.GetAxis("VerticalGamepad") : 0;
+        }
+
+        bool isMoving = (moveX != 0 || moveZ != 0) && isGrounded;
+
+        if (isMoving)
+        {
+            if (!audioSource.isPlaying && moveClip != null)
             {
-                if (!audioSource.isPlaying && moveClip != null)
-                {
-                    audioSource.clip = moveClip;
-                    audioSource.loop = true;
-                    audioSource.Play();
-                }
-            }
-            else // Player stopped moving
-            {
-                if (audioSource.isPlaying && audioSource.clip == moveClip)
-                {
-                    audioSource.Stop();
-                }
+                audioSource.clip = moveClip;
+                audioSource.loop = true;
+                audioSource.Play();
             }
         }
-        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
+        else
         {
-            float moveX = Input.GetAxis("HorizontalGamepad");
-            float moveZ = is3DView ? Input.GetAxis("VerticalGamepad") : 0;
-
-            if ((moveX != 0 || moveZ != 0) && isGrounded) // Player is moving
+            if (audioSource.isPlaying && audioSource.clip == moveClip)
             {
-                if (!audioSource.isPlaying && moveClip != null)
-                {
-                    audioSource.clip = moveClip;
-                    audioSource.loop = true;
-                    audioSource.Play();
-                }
-            }
-            else // Player stopped moving
-            {
-                if (audioSource.isPlaying && audioSource.clip == moveClip)
-                {
-                    audioSource.Stop();
-                }
+                audioSource.Stop();
             }
         }
     }
+
 
     private void UpdateAnimation()
     {
-        if (movementType == MovementType.Keyboard)
-        {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = is3DView ? Input.GetAxis("Vertical") : 0;
-            float speed = Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput);
+        float horizontalInput = 0f;
+        float verticalInput = 0f;
 
-            animator.SetFloat("Speed", speed);
-            animator.SetBool("IsGrounded", isGrounded);
-            animator.SetBool("Is3DView", is3DView);
-        }
-        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
+        if (!GameManager.Instance.isMultiPlayer || movementType == MovementType.Keyboard)
         {
-            float horizontalInput = Input.GetAxis("HorizontalGamepad");
-            float verticalInput = is3DView ? Input.GetAxis("VerticalGamepad") : 0;
-            float speed = Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput);
-
-            animator.SetFloat("Speed", speed);
-            animator.SetBool("IsGrounded", isGrounded);
-            animator.SetBool("Is3DView", is3DView);
+            horizontalInput += Input.GetAxis("Horizontal");
+            verticalInput += is3DView ? Input.GetAxis("Vertical") : 0;
         }
+
+        if (!GameManager.Instance.isMultiPlayer || movementType == MovementType.Controller)
+        {
+            horizontalInput += Input.GetAxis("HorizontalGamepad");
+            verticalInput += is3DView ? Input.GetAxis("VerticalGamepad") : 0;
+        }
+
+        float speed = Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput);
+
+        animator.SetFloat("Speed", speed);
+        animator.SetBool("IsGrounded", isGrounded);
+        animator.SetBool("Is3DView", is3DView);
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {

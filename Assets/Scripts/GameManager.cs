@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
     {
         // Calculate score based on time (lower time = higher score)
         float timeElapsed = Time.time - startTime;
-        score = Mathf.Max(0, 1000 - Mathf.RoundToInt(timeElapsed * 10)); // Example: Lose 10 points per second
+        score = Mathf.Max(0, 5000 - Mathf.RoundToInt(timeElapsed * 10)); // Example: Lose 10 points per second
         UpdateScoreUI();
     }
 
@@ -250,5 +250,10 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetString("HighScoreName" + i, highScoreNames[i]);
         }
         PlayerPrefs.Save();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
