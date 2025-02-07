@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
                 ToggleCameraView(is3DView);
             }
         }
-        if (movementType == MovementType.Controller)
+        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
         {
             if (Input.GetButtonDown("JumpGamepad") && isGrounded)
             {
@@ -146,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
                 facingRight = false;
             }
         }
-        if (movementType == MovementType.Controller)
+        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
         {
             float moveX = Input.GetAxis("HorizontalGamepad");
             float speed = Input.GetAxisRaw("SprintGamepad") > 0.5f ? sprintSpeed : walkSpeed;
@@ -179,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3 move = transform.right * moveX + transform.forward * moveZ;
             rb.MovePosition(transform.position + move * speed * Time.deltaTime);
         }
-        if (movementType == MovementType.Controller)
+        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
         {
             float moveX = Input.GetAxis("HorizontalGamepad");
             float moveZ = Input.GetAxis("VerticalGamepad");
@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
             Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
             transform.Rotate(Vector3.up * mouseX);
         }
-        if (movementType == MovementType.Controller)
+        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
         {
             float mouseX = Input.GetAxis("Gamepad X") * joystickSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Gamepad Y") * joystickSensitivity * Time.deltaTime;
@@ -278,7 +278,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        if (movementType == MovementType.Controller)
+        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
         {
             float moveX = Input.GetAxis("HorizontalGamepad");
             float moveZ = is3DView ? Input.GetAxis("VerticalGamepad") : 0;
@@ -314,7 +314,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsGrounded", isGrounded);
             animator.SetBool("Is3DView", is3DView);
         }
-        if (movementType == MovementType.Controller)
+        if (movementType == MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
         {
             float horizontalInput = Input.GetAxis("HorizontalGamepad");
             float verticalInput = is3DView ? Input.GetAxis("VerticalGamepad") : 0;

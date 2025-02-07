@@ -95789,10 +95789,20 @@ PrefabInstance:
       propertyPath: playerAmmoSlider
       value: 
       objectReference: {fileID: 1750950391}
+    - target: {fileID: 5961472329128622712, guid: d9beec555c81cd34c9d8cb6d12c55962,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6410581398964749545, guid: d9beec555c81cd34c9d8cb6d12c55962,
         type: 3}
       propertyPath: m_Name
       value: Player1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410581398964749545, guid: d9beec555c81cd34c9d8cb6d12c55962,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7570331467831413817, guid: d9beec555c81cd34c9d8cb6d12c55962,
         type: 3}
