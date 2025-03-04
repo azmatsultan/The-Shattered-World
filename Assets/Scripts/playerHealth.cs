@@ -10,6 +10,10 @@ public class playerHealth : MonoBehaviour
     float currentHealth;
 
     public GameObject playerDeathFX;
+    public GameObject leavesFX;
+    public GameObject rainFX;
+    public GameObject dustFX;
+    public GameObject snowFX;
     public GameObject GameManager;
     GameManager gameManager;
 
@@ -27,6 +31,8 @@ public class playerHealth : MonoBehaviour
     public AudioClip DamageTakenClip;       // Damage sound clip
     public AudioClip PlayerDeathSound;
 
+    
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -34,11 +40,40 @@ public class playerHealth : MonoBehaviour
         playerHealthSlider.maxValue = fullHealth;
         playerHealthSlider.value = currentHealth;
 
+        if (gameManager.currentLevel == 0)
+        {
+            leavesFX.SetActive(true);
+            rainFX.SetActive(true);
+
+            dustFX.SetActive(false);
+            snowFX.SetActive(false);
+
+        }
+        else if (gameManager.currentLevel == 1)
+        {
+            dustFX.SetActive(true);
+
+            snowFX.SetActive(false);
+            leavesFX.SetActive(false);
+            rainFX.SetActive(false);
+
+        }
+        else
+        {
+            snowFX.SetActive(true);
+
+            dustFX.SetActive(false);
+            leavesFX.SetActive(false);
+            rainFX.SetActive(false);
+
+        }
+
     }
 
     private void Awake()
     {
         gameManager = GameManager.GetComponent<GameManager>();
+        
     }
 
     // Update is called once per frame
