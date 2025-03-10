@@ -67,7 +67,7 @@ public class fireBullet : MonoBehaviour
 
             }
         }
-        if (myPlayer.movementType == PlayerMovement.MovementType.Controller)
+        if (myPlayer.movementType == PlayerMovement.MovementType.Controller || GameManager.Instance.isMultiPlayer == false)
         {
             if (Input.GetAxisRaw("ShootGamepad") > 0 && nextBullet < Time.time && remainingRounds > 0)
             {

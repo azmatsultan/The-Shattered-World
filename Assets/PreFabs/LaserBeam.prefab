@@ -5071,7 +5071,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 10
-  damage: 5
+  damage: 10
 --- !u!114 &1263677856251279481
 MonoBehaviour:
   m_ObjectHideFlags: 0
